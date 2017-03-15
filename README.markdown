@@ -17,6 +17,7 @@ Our overarching goals are clarity, consistency and brevity, in that order.
   * [Unused Code](#unused-code)
   * [Minimal Imports](#minimal-imports)
 * [Spacing](#spacing)
+* [Link Breaks](#line-breaks)
 * [Comments](#comments)
 * [Classes and Structures](#classes-and-structures)
   * [Use of Self](#use-of-self)
@@ -268,12 +269,12 @@ else {
 
 * There should be exactly one blank line between methods to aid in visual clarity and organization. Whitespace within methods should separate functionality, but having too many sections in a method often means you should refactor into several methods.
 
-* Colons always have no space on the left and one space on the right. Exceptions are the ternary operator `? :`, empty dictionary `[:]` and  `#selector` syntax for unnamed parameters `(_:)`.
+* Colons always have no space on the left and one space on the right. Exceptions are the ternary operator `? :`, empty dictionary `[:]`,  `#selector` syntax for unnamed parameters `(_:)`, or when declaring a dictionary's data type types `[String : Any]`.
 
 **Preferred:**
 ```swift
 class TestDatabase: Database {
-  var data: [String: CGFloat] = ["A": 1.2, "B": 3.2]
+  var data: [String : CGFloat] = ["A": 1.2, "B": 3.2]
 }
 ```
 
@@ -284,11 +285,116 @@ class TestDatabase : Database {
 }
 ```
 
-* Long lines should be wrapped at around 70 characters. A hard limit is intentionally not specified.
+* Long lines should be wrapped at around 100 characters. A hard limit is intentionally not specified.
 
 * Avoid trailing whitespaces at the ends of lines.
 
+## Line Breaks
+
+**Always**
+
+* Use line breaks to maximize code readability
+
 * Add a single newline character at the end of each file.
+
+* Do not add a newline character at the beginning of each file.
+
+* Never use two consecutive newline characters
+
+* Add a single newline character before and after Swift MARKs
+
+* Add a single newline character above a variable's or method's comments
+
+**When appropriate**
+
+* Add a single newline character after the opening curly bracket of a construct
+
+* Add a single newline character between groups of related property declarations within contructs
+
+* Add a single newline character between groups of related lines of code within a method; for example, before and after a guard or switch case statement.
+
+**Preferred:**
+```swift
+class LoginViewController: UIViewController {
+
+  weak var delegate: LoginViewControllerDelegate?
+
+  @IBOutlet fileprivate weak var usernameTextfield: UITextField?
+  @IBOutlet fileprivate weak var passwordTextfield: UITextField?
+
+  // MARK: - ViewController Lifecycle
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    usernameTextfield?.keyboardType = .emailAddress
+    passwordTextfield?.isSecureTextEntry = true
+  }
+
+  // MARK: - Actions
+
+  /// Submit login form
+  @IBAction fileprivate func submitButtonTapped(_ sender: Any) {
+
+    guard 
+      let usernameValue = usernameTextfield?.text,
+      usernameValue.isEmpty == false 
+    else {
+      return
+    }
+
+    guard 
+      let passwordValue = passwordTextfield?.text,
+      passwordValue.isEmpty == false 
+    else {
+      return
+    }
+
+    delegate?.login(username: usernameValue, password: passwordValue) {
+      // ...
+    }
+  }
+}
+```
+
+**Not Preferred:**
+```swift
+class LoginViewController: UIViewController {
+  weak var delegate: LoginViewControllerDelegate?
+  @IBOutlet fileprivate weak var usernameTextfield: UITextField?
+  @IBOutlet fileprivate weak var passwordTextfield: UITextField?
+
+  // MARK: - ViewController Lifecycle
+  override func viewDidLoad() {
+
+    super.viewDidLoad()
+
+    usernameTextfield?.keyboardType = .emailAddress
+
+    passwordTextfield?.isSecureTextEntry = true
+  }
+
+  // MARK: - Actions
+  /// Submit login form
+  @IBAction fileprivate func submitButtonTapped(_ sender: Any) {
+    guard 
+      let usernameValue = usernameTextfield?.text,
+      usernameValue.isEmpty == false 
+    else {
+      return
+    }
+    guard 
+      let passwordValue = passwordTextfield?.text,
+      passwordValue.isEmpty == false 
+    else {
+      return
+    }
+    delegate?.login(username: usernameValue, password: passwordValue) {
+      // ...
+    }
+  }
+}
+```
 
 ## Comments
 
@@ -313,8 +419,10 @@ Here's an example of a well-styled class definition:
 
 ```swift
 class Circle: Shape {
+
   var x: Int, y: Int
   var radius: Double
+
   var diameter: Double {
     get {
       return radius * 2
@@ -340,9 +448,11 @@ class Circle: Shape {
 }
 
 extension Circle: CustomStringConvertible {
+
   var description: String {
     return "center = \(centerString) area = \(area())"
   }
+
   private var centerString: String {
     return "(\(x),\(y))"
   }
@@ -765,6 +875,7 @@ func computeFFT(context: Context?, inputData: InputData?) throws -> Frequencies 
   guard let context = context else { 
     throw FFTError.noContext 
   }
+
   guard let inputData = inputData else { 
     throw FFTError.noInputData 
   }
