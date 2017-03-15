@@ -303,7 +303,7 @@ class TestDatabase : Database {
 
 * Add a single newline character before and after Swift MARKs
 
-* Add a single newline character above a variable's or method's comments
+* Add a single newline character before a variable's or method's comments
 
 **When appropriate**
 
