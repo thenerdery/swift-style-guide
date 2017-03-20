@@ -299,7 +299,7 @@ class TestDatabase : Database {
 
 * Do not add a newline character at the beginning of each file.
 
-* Never use two consecutive newline characters
+* Never use two consecutive newline characters. With the exception of 2 spaces above Swift MARK's.
 
 * Add a single newline character before and after Swift MARKs
 
@@ -322,6 +322,7 @@ class LoginViewController: UIViewController {
   @IBOutlet fileprivate weak var usernameTextfield: UITextField?
   @IBOutlet fileprivate weak var passwordTextfield: UITextField?
 
+
   // MARK: - ViewController Lifecycle
 
   override func viewDidLoad() {
@@ -330,6 +331,7 @@ class LoginViewController: UIViewController {
     usernameTextfield?.keyboardType = .emailAddress
     passwordTextfield?.isSecureTextEntry = true
   }
+
 
   // MARK: - Actions
 
