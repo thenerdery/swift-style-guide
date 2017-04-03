@@ -287,7 +287,7 @@ class TestDatabase : Database {
 
 * Long lines should be wrapped at around 100 characters. A hard limit is intentionally not specified.
 
-* Avoid trailing whitespaces at the ends of lines.
+* Avoid trailing whitespaces at the ends of lines. This can be generally avoided by enabling the "Automatically trim trailing white space" option in Preferences > Text Editing.
 
 ## Line Breaks
 
