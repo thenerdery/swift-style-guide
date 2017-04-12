@@ -287,7 +287,7 @@ class TestDatabase : Database {
 
 * Long lines should be wrapped at around 100 characters. A hard limit is intentionally not specified.
 
-* Avoid trailing whitespaces at the ends of lines.
+* Avoid trailing whitespaces at the ends of lines. This can be generally avoided by enabling the "Automatically trim trailing white space" option in Preferences > Text Editing.
 
 ## Line Breaks
 
@@ -554,15 +554,19 @@ attendeeList.sort { a, b in
 }
 ```
 
-Chained methods using trailing closures should be clear and easy to read in context. Decisions on spacing, line breaks, and when to use named versus anonymous arguments is left to the discretion of the author. Examples:
+When chaining multiple methods, do not use trailing closure syntax as it makes the code more difficult to visually parse. Each one of the chained methods should start on a new line to make it easier to identify all of the steps being undertaken in the chain.
 
+**Preferred:**
+```swift
+let value = numbers
+  .map({ $0 * 2 })
+  .filter({ $0 % 3 == 0 })
+  .index(of: 90)
+```
+
+**Not Preferred:**
 ```swift
 let value = numbers.map { $0 * 2 }.filter { $0 % 3 == 0 }.index(of: 90)
-
-let value = numbers
-  .map {$0 * 2}
-  .filter {$0 > 50}
-  .map {$0 + 10}
 ```
 
 ## Types
