@@ -244,7 +244,7 @@ override func tableView(_ tableView: UITableView, numberOfRowsInSection section:
 Keep imports minimal. For example, don't import `UIKit` when importing `Foundation` will suffice.
 
 ## Spacing
-  
+
 * Method braces and other braces (`if`/`else`/`switch`/`while` etc.) always open on the same line as the statement but close on a new line.
 
 **Preferred:**
@@ -338,16 +338,16 @@ class LoginViewController: UIViewController {
   /// Submit login form
   @IBAction fileprivate func submitButtonTapped(_ sender: Any) {
 
-    guard 
+    guard
       let usernameValue = usernameTextfield?.text,
-      usernameValue.isEmpty == false 
+      usernameValue.isEmpty == false
     else {
       return
     }
 
-    guard 
+    guard
       let passwordValue = passwordTextfield?.text,
-      passwordValue.isEmpty == false 
+      passwordValue.isEmpty == false
     else {
       return
     }
@@ -379,15 +379,15 @@ class LoginViewController: UIViewController {
   // MARK: - Actions
   /// Submit login form
   @IBAction fileprivate func submitButtonTapped(_ sender: Any) {
-    guard 
+    guard
       let usernameValue = usernameTextfield?.text,
-      usernameValue.isEmpty == false 
+      usernameValue.isEmpty == false
     else {
       return
     }
-    guard 
+    guard
       let passwordValue = passwordTextfield?.text,
-      passwordValue.isEmpty == false 
+      passwordValue.isEmpty == false
     else {
       return
     }
@@ -597,7 +597,8 @@ You can define constants on a type rather than on an instance of that type using
 
 **Preferred:**
 ```swift
-enum Math {
+struct Math {
+  private init() { }
   static let e = 2.718281828459045235360287
   static let root2 = 1.41421356237309504880168872
 }
@@ -605,7 +606,7 @@ enum Math {
 let hypotenuse = side * Math.root2
 
 ```
-**Note:** The advantage of using a case-less enumeration is that it can't accidentally be instantiated and works as a pure namespace.
+**Note:** Defining a private initializer prevents accidental instantiation, creating a pure namespace.
 
 **Not Preferred:**
 ```swift
@@ -778,8 +779,8 @@ Extend object lifetime using the `[weak self]` and `guard let strongSelf = self 
 **Preferred**
 ```swift
 resource.request().onComplete { [weak self] response in
-  guard let strongSelf = self else { 
-    return 
+  guard let strongSelf = self else {
+    return
   }
   let model = strongSelf.updateModel(response)
   strongSelf.updateUI(model)
@@ -878,16 +879,16 @@ When coding with conditionals, the left-hand margin of the code should be the "g
 ```swift
 func computeFFT(context: Context?, inputData: InputData?) throws -> Frequencies {
 
-  guard let context = context else { 
-    throw FFTError.noContext 
+  guard let context = context else {
+    throw FFTError.noContext
   }
 
-  guard let inputData = inputData else { 
-    throw FFTError.noInputData 
+  guard let inputData = inputData else {
+    throw FFTError.noInputData
   }
-    
+
   // use context and input to compute the frequencies
-    
+
   return frequencies
 }
 ```
@@ -914,12 +915,12 @@ When multiple optionals are unwrapped either with `guard` or `if let`, minimize 
 
 **Preferred:**
 ```swift
-guard 
-    let number1 = number1, 
-    let number2 = number2, 
-    let number3 = number3 
-else { 
-    fatalError("impossible") 
+guard
+    let number1 = number1,
+    let number2 = number2,
+    let number3 = number3
+else {
+    fatalError("impossible")
 }
 // do something with numbers
 ```
