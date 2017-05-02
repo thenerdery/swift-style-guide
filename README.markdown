@@ -942,6 +942,23 @@ if let number1 = number1 {
 }
 ```
 
+### Checking for existence
+
+Guards that merely check for the existence of of a property should check to see if a value is nil rather than casting it to an unused variable. This explicitly indicates what is being checked rather than using a side effect of a language feature.
+
+**Preferred:**
+```swift
+guard bolognaFirstName != nil else {
+    fatalError("It's O-S-C-A-R")
+}
+```
+
+**Not Preferred:**
+```swift
+guard let _ = bolognaLastName else {
+    fatalError("It's M-A-Y-E-R")
+}
+```
 ### Failing Guards
 
 Guard statements are required to exit in some way. Generally, this should be simple one line statement such as `return`, `throw`, `break`, `continue`, and `fatalError()`. Large code blocks should be avoided. If cleanup code is required for multiple exit points, consider using a `defer` block to avoid cleanup code duplication.
