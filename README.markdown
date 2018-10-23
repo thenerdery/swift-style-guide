@@ -816,7 +816,7 @@ Prefer `private` to `fileprivate` when possible. Using extensions may require yo
 
 Only explicitly use `open`, `public`, and `internal` when you require a full access control specification.
 
-Use access control as the leading property specifier. The only things that should come before access control are the `static` specifier or attributes such as `@IBAction`, `@IBOutlet` and `@discardableResult`.
+Use access control as the leading property specifier. The only things that should come before access control are attributes such as `@IBAction`, `@IBOutlet` and `@discardableResult`.
 
 **Preferred:**
 ```swift
