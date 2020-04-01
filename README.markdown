@@ -17,7 +17,8 @@ Our overarching goals are clarity, consistency and brevity, in that order.
   * [Unused Code](#unused-code)
   * [Minimal Imports](#minimal-imports)
 * [Spacing](#spacing)
-* [Link Breaks](#line-breaks)
+* [Line Breaks](#line-breaks)
+* [Line Wrapping](#line-wrapping)
 * [Comments](#comments)
 * [Classes and Structures](#classes-and-structures)
   * [Use of Self](#use-of-self)
@@ -395,6 +396,55 @@ class LoginViewController: UIViewController {
       // ...
     }
   }
+}
+```
+
+## Line Wrapping
+
+### Function Calls
+
+If a function call on a single line would exceed the maximum line length, you
+should place each argument on its own line. Each argument should be indented +4
+from the first line of the function call. Place the closing parenthesis on its
+own line.
+
+**Preferred**
+```swift
+let index = index(
+    of: superCalaFragilisticExpialidocious,
+    in: umDiddleIddleIddleUmDiddleAye
+)
+```
+
+**Not Preferred**
+```swift
+let index = index(of: superCalaFragilisticExpialidocious,
+                  in: umDiddleIddleIddleUmDiddleAye)
+```
+
+For function calls that include a trailing closure, if the closure causes the
+call to exceed the maximum line length, place each argument on its own line as
+described above. Place the opening brace of the closure, along with any closure
+arguments and the `in` keyword on the same line as the closing parenthesis.
+
+**Preferred**
+```swift
+search(
+    searchTerm: "superCalaFragilisticExpialidocious",
+    inDirectory: FileManager.default.temporaryDirectory,
+    recursively: true
+) { data in
+    // Handle data...
+}
+```
+
+**Not Preferred**
+```swift
+search(searchTerm: "superCalaFragilisticExpialidocious",
+       inDirectory: FileManager.default.temporaryDirectory,
+       recursively: true)
+{ data in
+    // Handle data...
 }
 ```
 
