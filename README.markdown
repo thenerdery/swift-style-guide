@@ -1,7 +1,4 @@
-# The Official raywenderlich.com Swift Style Guide.
-### Updated for Swift 4.2
-
-This style guide is different from others you may see, because the focus is centered on readability for print and the web. We created this style guide to keep the code in our books, tutorials, and starter kits nice and consistent — even though we have many different authors working on the books.
+# The Nerdery Swift Style Guide.
 
 Our overarching goals are clarity, consistency and brevity, in that order.
 
@@ -20,6 +17,8 @@ Our overarching goals are clarity, consistency and brevity, in that order.
   * [Unused Code](#unused-code)
   * [Minimal Imports](#minimal-imports)
 * [Spacing](#spacing)
+* [Line Breaks](#line-breaks)
+* [Line Wrapping](#line-wrapping)
 * [Comments](#comments)
 * [Classes and Structures](#classes-and-structures)
   * [Use of Self](#use-of-self)
@@ -282,10 +281,7 @@ var deviceModels: [String]
 
 ## Spacing
 
-* Indent using 2 spaces rather than tabs to conserve space and help prevent line wrapping. Be sure to set this preference in Xcode and in the Project settings as shown below:
-
-![Xcode indent settings](screens/indentation.png)
-
+* Indent using 4 spaces rather than tabs to conserve space and help prevent line wrapping. Be sure to set this preference in Xcode and in the Project settings as shown below: ![Xcode indent settings](screens/indentation.png)
 * Method braces and other braces (`if`/`else`/`switch`/`while` etc.) always open on the same line as the statement but close on a new line.
 * Tip: You can re-indent by selecting some code (or **Command-A** to select all) and then **Control-I** (or **Editor ▸ Structure ▸ Re-Indent** in the menu). Some of the Xcode template code will have 4-space tabs hard coded, so this is a good way to fix that.
 
@@ -310,15 +306,13 @@ else {
 ```
 
 * There should be exactly one blank line between methods to aid in visual clarity and organization. Whitespace within methods should separate functionality, but having too many sections in a method often means you should refactor into several methods.
-
 * There should be no blank lines after an opening brace or before a closing brace.
-
-* Colons always have no space on the left and one space on the right. Exceptions are the ternary operator `? :`, empty dictionary `[:]` and `#selector` syntax `addTarget(_:action:)`.
+* Colons always have no space on the left and one space on the right. Exceptions are the ternary operator `? :`, empty dictionary `[:]`,  `#selector` syntax for unnamed parameters `(_:)`, or when declaring a dictionary's data type types `[String : Any]`.
 
 **Preferred**:
 ```swift
 class TestDatabase: Database {
-  var data: [String: CGFloat] = ["A": 1.2, "B": 3.2]
+  var data: [String : CGFloat] = ["A": 1.2, "B": 3.2]
 }
 ```
 
@@ -329,11 +323,166 @@ class TestDatabase : Database {
 }
 ```
 
-* Long lines should be wrapped at around 70 characters. A hard limit is intentionally not specified.
+* Long lines should be wrapped at around 100 characters. A hard limit is intentionally not specified.
 
-* Avoid trailing whitespaces at the ends of lines.
+* Avoid trailing whitespaces at the ends of lines. This can be generally avoided by enabling the "Automatically trim trailing white space" option in Preferences > Text Editing.
+
+## Line Breaks
+
+**Always**
+
+* Use line breaks to maximize code readability
 
 * Add a single newline character at the end of each file.
+
+* Do not add a newline character at the beginning of each file.
+
+* Never use two consecutive newline characters. With the exception of 2 spaces above Swift MARK's.
+
+* Add a single newline character before and after Swift MARKs
+
+* Add a single newline character before a variable's or method's comments
+
+**When appropriate**
+
+* Add a single newline character after the opening curly bracket of a construct
+
+* Add a single newline character between groups of related property declarations within contructs
+
+* Add a single newline character between groups of related lines of code within a method; for example, before and after a guard or switch case statement.
+
+**Preferred:**
+```swift
+class LoginViewController: UIViewController {
+
+  weak var delegate: LoginViewControllerDelegate?
+
+  @IBOutlet fileprivate weak var usernameTextfield: UITextField?
+  @IBOutlet fileprivate weak var passwordTextfield: UITextField?
+
+
+  // MARK: - ViewController Lifecycle
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    usernameTextfield?.keyboardType = .emailAddress
+    passwordTextfield?.isSecureTextEntry = true
+  }
+
+
+  // MARK: - Actions
+
+  /// Submit login form
+  @IBAction fileprivate func submitButtonTapped(_ sender: Any) {
+    guard
+      let usernameValue = usernameTextfield?.text,
+      usernameValue.isEmpty == false
+    else {
+      return
+    }
+
+    guard
+      let passwordValue = passwordTextfield?.text,
+      passwordValue.isEmpty == false
+    else {
+      return
+    }
+
+    delegate?.login(username: usernameValue, password: passwordValue) {
+      // ...
+    }
+  }
+}
+```
+
+**Not Preferred:**
+```swift
+class LoginViewController: UIViewController {
+  weak var delegate: LoginViewControllerDelegate?
+  @IBOutlet fileprivate weak var usernameTextfield: UITextField?
+  @IBOutlet fileprivate weak var passwordTextfield: UITextField?
+
+  // MARK: - ViewController Lifecycle
+  override func viewDidLoad() {
+
+    super.viewDidLoad()
+
+    usernameTextfield?.keyboardType = .emailAddress
+
+    passwordTextfield?.isSecureTextEntry = true
+  }
+
+  // MARK: - Actions
+  /// Submit login form
+  @IBAction fileprivate func submitButtonTapped(_ sender: Any) {
+    guard
+      let usernameValue = usernameTextfield?.text,
+      usernameValue.isEmpty == false
+    else {
+      return
+    }
+    guard
+      let passwordValue = passwordTextfield?.text,
+      passwordValue.isEmpty == false
+    else {
+      return
+    }
+    delegate?.login(username: usernameValue, password: passwordValue) {
+      // ...
+    }
+  }
+}
+```
+
+## Line Wrapping
+
+### Function Calls
+
+If a function call on a single line would exceed the maximum line length, you
+should place each argument on its own line. Each argument should be indented +4
+from the first line of the function call. Place the closing parenthesis on its
+own line.
+
+**Preferred**
+```swift
+let index = index(
+    of: superCalaFragilisticExpialidocious,
+    in: umDiddleIddleIddleUmDiddleAye
+)
+```
+
+**Not Preferred**
+```swift
+let index = index(of: superCalaFragilisticExpialidocious,
+                  in: umDiddleIddleIddleUmDiddleAye)
+```
+
+For function calls that include a trailing closure, if the closure causes the
+call to exceed the maximum line length, place each argument on its own line as
+described above. Place the opening brace of the closure, along with any closure
+arguments and the `in` keyword on the same line as the closing parenthesis.
+
+**Preferred**
+```swift
+search(
+    searchTerm: "superCalaFragilisticExpialidocious",
+    inDirectory: FileManager.default.temporaryDirectory,
+    recursively: true
+) { data in
+    // Handle data...
+}
+```
+
+**Not Preferred**
+```swift
+search(searchTerm: "superCalaFragilisticExpialidocious",
+       inDirectory: FileManager.default.temporaryDirectory,
+       recursively: true)
+{ data in
+    // Handle data...
+}
+```
 
 ## Comments
 
@@ -359,8 +508,10 @@ Here's an example of a well-styled class definition:
 
 ```swift
 class Circle: Shape {
+
   var x: Int, y: Int
   var radius: Double
+
   var diameter: Double {
     get {
       return radius * 2
@@ -386,9 +537,11 @@ class Circle: Shape {
 }
 
 extension Circle: CustomStringConvertible {
+
   var description: String {
     return "center = \(centerString) area = \(area())"
   }
+
   private var centerString: String {
     return "(\(x),\(y))"
   }
@@ -431,26 +584,12 @@ var diameter: Double {
 }
 ```
 
-### Final
-
-Marking classes or members as `final` in tutorials can distract from the main topic and is not required. Nevertheless, use of `final` can sometimes clarify your intent and is worth the cost. In the below example, `Box` has a particular purpose and customization in a derived class is not intended. Marking it `final` makes that clear.
-
-```swift
-// Turn any generic type into a reference type using this Box class.
-final class Box<T> {
-  let value: T
-  init(_ value: T) {
-    self.value = value
-  }
-}
-```
-
 ## Function Declarations
 
 Keep short function declarations on one line including the opening brace:
 
 ```swift
-func reticulateSplines(spline: [Double]) -> Bool {
+func reticulate(splines: [Double]) -> Bool {
   // reticulate code goes here
 }
 ```
@@ -546,15 +685,19 @@ attendeeList.sort { a, b in
 }
 ```
 
-Chained methods using trailing closures should be clear and easy to read in context. Decisions on spacing, line breaks, and when to use named versus anonymous arguments is left to the discretion of the author. Examples:
+When chaining multiple methods, do not use trailing closure syntax as it makes the code more difficult to visually parse. Each one of the chained methods should start on a new line to make it easier to identify all of the steps being undertaken in the chain.
 
+**Preferred:**
+```swift
+let value = numbers
+  .map({ $0 * 2 })
+  .filter({ $0 % 3 == 0 })
+  .index(of: 90)
+```
+
+**Not Preferred:**
 ```swift
 let value = numbers.map { $0 * 2 }.filter { $0 % 3 == 0 }.index(of: 90)
-
-let value = numbers
-  .map {$0 * 2}
-  .filter {$0 > 50}
-  .map {$0 + 10}
 ```
 
 ## Types
@@ -591,7 +734,8 @@ You can define constants on a type rather than on an instance of that type using
 
 **Preferred**:
 ```swift
-enum Math {
+struct Math {
+  private init() { }
   static let e = 2.718281828459045235360287
   static let root2 = 1.41421356237309504880168872
 }
@@ -599,7 +743,7 @@ enum Math {
 let hypotenuse = side * Math.root2
 
 ```
-**Note:** The advantage of using a case-less enumeration is that it can't accidentally be instantiated and works as a pure namespace.
+**Note:** Defining a private initializer prevents accidental instantiation, creating a pure namespace.
 
 **Not Preferred**:
 ```swift
@@ -775,7 +919,7 @@ let value = max(x, y, z)  // another free function that feels natural
 
 ## Memory Management
 
-Code (even non-production, tutorial demo code) should not create reference cycles. Analyze your object graph and prevent strong cycles with `weak` and `unowned` references. Alternatively, use value types (`struct`, `enum`) to prevent cycles altogether.
+Code should not create reference cycles. Analyze your object graph and prevent strong cycles with `weak` and `unowned` references. Alternatively, use value types (`struct`, `enum`) to prevent cycles altogether.
 
 ### Extending object lifetime
 
@@ -811,12 +955,11 @@ resource.request().onComplete { [weak self] response in
 ```
 
 ## Access Control
-
-Full access control annotation in tutorials can distract from the main topic and is not required. Using `private` and `fileprivate` appropriately, however, adds clarity and promotes encapsulation. Prefer `private` to `fileprivate`; use `fileprivate` only when the compiler insists.
+Prefer `private` to `fileprivate` when possible. Using extensions may require you to use `fileprivate`; use `fileprivate` only when the compiler insists.
 
 Only explicitly use `open`, `public`, and `internal` when you require a full access control specification.
 
-Use access control as the leading property specifier. The only things that should come before access control are the `static` specifier or attributes such as `@IBAction`, `@IBOutlet` and `@discardableResult`.
+Use access control as the leading property specifier. The only things that should come before access control are attributes such as `@IBAction`, `@IBOutlet` and `@discardableResult`.
 
 **Preferred**:
 ```swift
@@ -907,11 +1050,13 @@ func computeFFT(context: Context?, inputData: InputData?) throws -> Frequencies 
   guard let context = context else {
     throw FFTError.noContext
   }
+
   guard let inputData = inputData else {
     throw FFTError.noInputData
   }
 
   // use context and input to compute the frequencies
+
   return frequencies
 }
 ```
@@ -965,6 +1110,23 @@ if let number1 = number1 {
 }
 ```
 
+### Checking for existence
+
+Guards that merely check for the existence of of a property should check to see if a value is nil rather than casting it to an unused variable. This explicitly indicates what is being checked rather than using a side effect of a language feature.
+
+**Preferred:**
+```swift
+guard bolognaFirstName != nil else {
+    fatalError("It's O-S-C-A-R")
+}
+```
+
+**Not Preferred:**
+```swift
+guard let _ = bolognaLastName else {
+    fatalError("It's M-A-Y-E-R")
+}
+```
 ### Failing Guards
 
 Guard statements are required to exit in some way. Generally, this should be simple one line statement such as `return`, `throw`, `break`, `continue`, and `fatalError()`. Large code blocks should be avoided. If cleanup code is required for multiple exit points, consider using a `defer` block to avoid cleanup code duplication.
@@ -1047,65 +1209,6 @@ let message = "You cannot charge the flux " +
   "You must use a super-charger " +
   "which costs 10 credits. You currently " +
   "have \(credits) credits available."
-```
-
-## No Emoji
-
-Do not use emoji in your projects. For those readers who actually type in their code, it's an unnecessary source of friction. While it may be cute, it doesn't add to the learning and it interrupts the coding flow for these readers.
-
-## Organization and Bundle Identifier
-
-Where an Xcode project is involved, the organization should be set to `Ray Wenderlich` and the Bundle Identifier set to `com.raywenderlich.TutorialName` where `TutorialName` is the name of the tutorial project.
-
-![Xcode Project settings](screens/project_settings.png)
-
-## Copyright Statement
-
-The following copyright statement should be included at the top of every source
-file:
-
-```swift
-/// Copyright (c) 2019 Razeware LLC
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-/// 
-/// The above copyright notice and this permission notice shall be included in
-/// all copies or substantial portions of the Software.
-/// 
-/// Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
-/// distribute, sublicense, create a derivative work, and/or sell copies of the
-/// Software in any work that is designed, intended, or marketed for pedagogical or
-/// instructional purposes related to programming, coding, application development,
-/// or information technology.  Permission for such use, copying, modification,
-/// merger, publication, distribution, sublicensing, creation of derivative works,
-/// or sale is expressly withheld.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
-```
-
-## Smiley Face
-
-Smiley faces are a very prominent style feature of the [raywenderlich.com](https://www.raywenderlich.com/) site! It is very important to have the correct smile signifying the immense amount of happiness and excitement for the coding topic. The closing square bracket `]` is used because it represents the largest smile able to be captured using ASCII art. A closing parenthesis `)` creates a half-hearted smile, and thus is not preferred.
-
-**Preferred**:
-```
-:]
-```
-
-**Not Preferred**:
-```
-:)
 ```
 
 ## References
